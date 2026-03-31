@@ -5,7 +5,9 @@ from typing import Optional, List
 from random import randrange
 import psycopg2
 from psycopg2.extras import RealDictCursor
-import time
+import time,os
+
+import uvicorn
 from . import models, schemas
 from .database import engine, get_db
 from sqlalchemy.orm import Session
@@ -190,3 +192,14 @@ def update_post(id: int, updated_post: schemas.PostCreate, db: Session = Depends
     post_query.update(updated_post.dict(), synchronize_session=False)
     db.commit()
     return post_query.first()
+
+
+
+#
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 4000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
+
+
+#
